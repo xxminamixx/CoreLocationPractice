@@ -7,9 +7,13 @@
 //
 
 #import "ViewController.h"
+#import <MapKit/MapKit.h>
 
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *textFieled;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @end
 
@@ -18,6 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.mapView setShowsUserLocation:YES];
 }
 
 - (void)didReceiveMemoryWarning
