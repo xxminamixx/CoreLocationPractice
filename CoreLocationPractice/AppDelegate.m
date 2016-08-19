@@ -8,7 +8,9 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<CLLocationManagerDelegate>
+
+@property CLLocationManager *locationManager;
 
 @end
 
@@ -16,7 +18,26 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // ロケーションマネージャーを生成
+    self.locationManager = [CLLocationManager new];
+    
+    // 位置情報の利用をユーザに伺う
+    [self.locationManager requestWhenInUseAuthorization];
+    
+    self.locationManager.delegate = self;
+    
+    // ロケーションマネージャーのすべての結果が通知されるように設定
+    [self.locationManager setDistanceFilter:kCLDistanceFilterNone];
+    
+    // 検出時間や消費電力にかかわらず、最も正確な位置を検出するように設定
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    
+    // 位置情報の検出をすぐに開始させる
+    [self.locationManager startUpdatingLocation];
+    
+    [[self window] makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -40,6 +61,31 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)locationManager:(CLLocationManager *)manager
+   didUpdateToLocation:(CLLocation*)newLocation
+          fromLocation:(CLLocation*)oldLocation
+{
+     NSLog(@"%@", newLocation);
+}
+
+- (void)locatioManager:(CLLocationManager *)manager
+      didFailWithError:(NSError *)error
+{
+    NSLog(@"Could not find location: %@", error);
+}
+
+// CLLocationManager オブジェクトにデリゲートオブジェクトを設定すると初回に呼ばれる
+- (void)locationManager:(CLLocationManager *)manager
+didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        // ユーザが位置情報の使用を許可していない
+        NSLog(@"許可していない");
+    } else {
+        NSLog(@"許可している");
+    }
 }
 
 @end
