@@ -73,6 +73,12 @@
      NSLog(@"%@", newLocation);
 }
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation* location = [locations lastObject];
+    NSLog(@"緯度 %+.6f, 経度 %+.6f\n", location.coordinate.latitude, location.coordinate.longitude);
+}
+
 - (void)locatioManager:(CLLocationManager *)manager
       didFailWithError:(NSError *)error
 {
