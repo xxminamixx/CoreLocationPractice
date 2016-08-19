@@ -20,7 +20,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // ロケーションマネージャーを生成
-    self.locationManager = [CLLocationManager new];
+    self.locationManager = [[CLLocationManager alloc] init];
     
     // 位置情報の利用をユーザに伺う
     [self.locationManager requestWhenInUseAuthorization];
